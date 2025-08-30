@@ -68,42 +68,6 @@ def run_command(user_prompt, system_prompt=None, model="gpt-4o", prev_response_i
         'entire response': response
     }
 
-def deepseek_run_command(user_prompt, system_prompt=None, model="deepseek-chat", prev_response_id=None):
-    client = OpenAI(api_key="sk-690b4388d1a64dd9b8b37ef5c4ac2d81", base_url="https://api.deepseek.com")
-    if system_prompt is None:
-        messages = [{"role": "user", "content": user_prompt}]
-    else:
-        messages = [
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_prompt}
-        ]
-
-    response = client.chat.completions.create(
-        model=model,
-        messages=messages
-    )
-    time_to_wait = 5
-    for i in range(10):
-        try:
-            text = response.choices[0].message.content
-            reasoning_tokens = None
-            cached_tokens = None
-        except:
-            time.sleep(time_to_wait)
-            time_to_wait = time_to_wait*2
-            
-        else:
-            break       
-
-
-    return {
-        'text': text,
-        'cached tokens': cached_tokens,
-        'reasoning tokens': reasoning_tokens,
-        'entire response': response
-    }
-
-
 def gemini_run_command(user_prompt, system_prompt=None, model="gemma-3-27b-it", thinking_budget =None):
     client = genai.Client(api_key=api_key_google)
     time_to_wait = 5
